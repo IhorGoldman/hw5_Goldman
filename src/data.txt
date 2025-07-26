@@ -1,9 +1,5 @@
 [
   {
-    "id": 123,
-    "userName": "Kolya"
-  },
-  {
     "id": 2,
     "userName": "Anabel"
   },

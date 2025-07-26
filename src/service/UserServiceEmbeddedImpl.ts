@@ -14,6 +14,9 @@ export class UserServiceEmbeddedImpl implements UserService, UserFilePersistence
     addUser(user: User): boolean {
         if (this.users.findIndex((u: User) => u.id === user.id) === -1) {
             this.users.push(user);
+            myLogger.log(`User: ${user} was added`);
+            myLogger.save(`User: ${user} was added`);
+
             return true;
         }
         return false;
@@ -34,6 +37,9 @@ export class UserServiceEmbeddedImpl implements UserService, UserFilePersistence
         if (index === -1) throw "404";
         const removed = this.users[index];
         this.users.splice(index, 1);
+        myLogger.log(`User with id:${id} was removed`);
+        myLogger.save(`User with id:${id} was removed`);
+
         return removed;
     }
 
@@ -41,6 +47,9 @@ export class UserServiceEmbeddedImpl implements UserService, UserFilePersistence
         const index = this.users.findIndex(item => item.id === newUser.id);
         if (index === -1) throw "404";
         this.users[index] = newUser;
+        myLogger.log(`Data was updated, new data: ${newUser}`);
+        myLogger.save(`Data was updated, new data: ${newUser}`);
+
     }
 
 
@@ -60,10 +69,10 @@ export class UserServiceEmbeddedImpl implements UserService, UserFilePersistence
                 myLogger.save("Data was restored from file");
                 this.rs.close();
             } else {
-                this.users = [{id: 123, userName: "Kolya"}]
+                this.users = [{id: 123, userName: "Doron"}]
             }
         })
-        this.rs.on('error', (err) => {
+        this.rs.on('error', () => {
             this.users = [{id: 2, userName: "Bender"}]
             myLogger.log("Data was not restored from file");
             myLogger.save("Data was not restored from file");
